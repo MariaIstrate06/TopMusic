@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>820</width>
-    <height>565</height>
+    <width>1020</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,17 +31,23 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu'; font-weight:600; font-style:italic;&quot;&gt;Add your song!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QTableWidget" name="tableWidget">
+   <widget class="QTableWidget" name="SongTable">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>60</y>
-      <width>471</width>
+      <x>190</x>
+      <y>70</y>
+      <width>661</width>
       <height>341</height>
      </rect>
     </property>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+     <bool>false</bool>
+    </attribute>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -97,7 +103,7 @@ p, li { white-space: pre-wrap; }
       </layout>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="addSongButton">
        <property name="text">
         <string>ADD SONG</string>
        </property>
@@ -105,13 +111,83 @@ p, li { white-space: pre-wrap; }
      </item>
     </layout>
    </widget>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>70</y>
+      <width>120</width>
+      <height>341</height>
+     </rect>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>118</width>
+       <height>339</height>
+      </rect>
+     </property>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>24</x>
+        <y>5</y>
+        <width>91</width>
+        <height>331</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QCheckBox" name="CheckRock">
+         <property name="text">
+          <string>Rock</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="CheckIndie">
+         <property name="text">
+          <string>Indie</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="CheckHip">
+         <property name="text">
+          <string>Hip</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="CheckRap">
+         <property name="text">
+          <string>Rap</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="CheckEDM">
+         <property name="text">
+          <string>EDM</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>820</width>
+     <width>1020</width>
      <height>21</height>
     </rect>
    </property>

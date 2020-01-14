@@ -1,10 +1,13 @@
-1 Artist=Hozier, Song=Work Song, Genre=Indie, Description=Chill, Link=youtube
-2 Artist=Treble, Song=Blind Game, Genre=Rock, Description=New, Link=youtube
-3 Artist=Adam's Nest, Song=Stockholm, Genre=Indie, Description=New Wave, Link=youtube
-4 Artist=Cloverfield, Song=Koala, Genre=Pop, Description=Kids, Link=youtube
-5 Artist=5Gang, Song=Tank, Genre=Pop, Description=Flex, Link=youtube
-6 Artist=Fort Minor, Song=Remember the name, Genre=Hip Hop, Description=Street, Link=youtube
-7 Artist=Eminem, Song=Beautiful Pain, Genre=Rap, Description=Sad, Link=youtube
-8 Artist=Vita de Vie, Song=Metafora de Toamna, Genre=Rock, Description=Romanesc, Link=youtube
-9 Artist=Logger, Song=Darkbird, Genre=EDM, Description=Original, Link=youtube
-10 Artist=Twenty One Pilots, Song=Truce, Genre=Indie, Description=Personal, Link=youtube
+Hozier,Work Song,Indie,Chill,youtube,0
+Treble,Blind Game,Rock,New,youtube,5
+Adam's Nest,Stockholm,Indie,New Wave,youtube,0
+Cloverfield,Koala,Rock,Kids,youtube,4
+5Gang,Tank,Indie,Flex,youtube,1
+Fort Minor,Remember the name,Hip Hop,Street,youtube,2
+Eminem,Beautiful Pain,Rap,Sad,youtube,0
+Vita de Vie,Metafora de Toamna,Rock,Romanesc,youtube,3
+Logger,Darkbird,EDM,Original,youtube,0
+Twenty One Pilots,Truce,Indie,Personal,youtube,2
+Personal Jesus,Johnny Cash,Rock,Chill,youtube,1
+SOS,5Gang,Indie,gunoi,as vrea sa nu,0
+When Crows Tick on Windows,Carach Angren,Rock,Metaleala,youtube,8

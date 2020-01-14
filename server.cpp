@@ -2,17 +2,28 @@
 
 #define PORT 3005
 int nrusers; 
+int votes[100];
+char genres[10][10]={"Rock", "Indie", "HipHop", "Rap","EDM"};
 struct a_user{
     int index; 
     char username[100];
     char passwd[100]; 
     short int aoru; 
 }userArray[20]; 
+struct a_song{
+    char name[256], artist[256], description[256], link[256], genre[256];
+    int votes;
+    //int indexOfGenre;
+}songArray[100]; int nrSongs;
 void my_users(); 
+void createSongList();
+void printSongList(); 
 void print_datafromfile(); 
 void my_users(); 
+void saveSongVotes();
 char * conv_addr(struct sockaddr_in); 
 int VerifClient(int); 
+int userOption(int);
 
 
 //extern int errno; 
@@ -28,6 +39,8 @@ int main(){
     int nfds;			/* numarul maxim de descriptori */
     unsigned int len;			/* lungimea structurii sockaddr_in */
     
+    createSongList();
+
     if((sd = socket(AF_INET, SOCK_STREAM, 0))==-1){
         perror("[SERVER] socket() Error.\n");
     }
@@ -55,7 +68,8 @@ int main(){
     tv.tv_sec = 1; //cica e un fel de wait 
     tv.tv_usec = 0; 
     nfds = sd; // valoare maxima a descriptorilor 
-
+    //createSongList();
+    //printSongList();
     printf("[SERVER] Waiting for connection at port. %d\n", PORT); 
     fflush(stdout); 
     
@@ -67,6 +81,7 @@ int main(){
             return errno; 
         }
         //is socket ready?
+        
         if(FD_ISSET(sd,&readfds)){
             //pregatim o structura client
             len = sizeof(from); 
@@ -93,6 +108,7 @@ int main(){
                 if (VerifClient(fd))
                 {
                     printf ("[server] S-a deconectat clientul cu descriptorul %d.\n",fd);
+                    saveSongVotes();
                     fflush (stdout);
                     close (fd);		/* inchidem conexiunea cu clientul */
                     FD_CLR (fd, &actfds);/* scoatem si din multime */
@@ -102,7 +118,6 @@ int main(){
                 {
                     strcpy(isLogged, "NO"); 
                 }
-                write(sd, isLogged, 256); 
 	        }
 	    }			
     }
@@ -127,7 +142,116 @@ int VerifClient(int fd){
         write(fd, "NO", 256);
         return 0;
     }
-    return 1; 
+    return userOption(fd);  
+}
+int userOption(int cd){
+    char command[256];
+    while(1){
+       // printf("sex\n");
+        fflush(stdout);
+        
+        if(read(cd, command, 256) <= 0)
+            return 1; 
+        
+        printf("%s\n", command);
+        fflush(stdout);
+        if(strcmp(command,"refresh")==0){
+            write(cd, &nrSongs, 4); 
+            printf("No songs %d\n", nrSongs);
+            fflush(stdout);
+            for(int i = 0; i<nrSongs;i++){
+                write(cd, songArray[i].name, 256);
+                write(cd, songArray[i].artist, 256);
+                write(cd, songArray[i].genre, 256);
+                write(cd, songArray[i].description, 256);
+                write(cd, songArray[i].link, 256);
+                write(cd, &songArray[i].votes, 4);
+            }
+
+        }
+        if(strcmp(command, "vote") == 0) 
+        {
+            char votedSongName[256];
+            read(cd, votedSongName, 256);
+
+            for(int i = 0; i < nrSongs; i++)
+            {
+                if( strcmp(votedSongName, songArray[i].name ) == 0 )
+                {
+                    songArray[i].votes++;
+                    break;
+                }
+            }
+        }
+        if(strcmp(command, "addSong") == 0)
+        {
+            a_song newSong;
+            read(cd, newSong.name, 256);
+            read(cd, newSong.artist, 256);
+            read(cd, newSong.genre, 256);
+            read(cd, newSong.description, 256);
+            read(cd, newSong.link, 256);
+            newSong.votes = 0;
+
+            FILE *songsFile = fopen("Songs.txt", "a");
+            fprintf(songsFile, "%s,%s,%s,%s,%s,%d\n", 
+                newSong.name, newSong.artist, newSong.genre,
+                newSong.description,newSong.link, newSong.votes);
+            
+            songArray[nrSongs++] = newSong;
+
+            fclose(songsFile);
+        }
+    }
+    
+}
+
+void saveSongVotes()
+{
+    char songLine[256];
+    FILE* myFile = fopen("Songs.txt", "w");
+    for(int i = 0; i < nrSongs; i++)
+    {
+        fprintf(myFile, "%s,%s,%s,%s,%s,%d\n", songArray[i].name,
+                songArray[i].artist, songArray[i].genre,
+                songArray[i].description, songArray[i].link,
+                songArray[i].votes);
+    }
+    fflush(myFile);
+    fclose(myFile);
+}
+
+void createSongList( ){
+    char songLine[256];
+    FILE* myFile = fopen("Songs.txt", "r"); 
+    while(!feof(myFile)){
+        memset(songLine, 0, 256);
+        fgets(songLine, 256, myFile);
+       // printf("%s", songLine);
+       // fflush(stdout);
+        char *p; 
+        p=strtok(songLine,",\n");
+        if(p==NULL)
+            break; 
+        strcpy(songArray[nrSongs].name, p); 
+        p=strtok(NULL,",\n");
+        strcpy(songArray[nrSongs].artist, p);
+        p=strtok(NULL,",\n");
+        strcpy(songArray[nrSongs].genre, p);
+        p=strtok(NULL,",\n");
+        strcpy(songArray[nrSongs].description, p);
+        p=strtok(NULL,",\n");
+        strcpy(songArray[nrSongs].link, p);
+        p=strtok(NULL, ",\n");
+        songArray[nrSongs].votes = atoi(p);
+         nrSongs++; 
+    }
+    fclose(myFile); 
+}
+void printSongList(){
+    for(int i = 0; i<nrSongs;i++)
+        printf("%s\n%s\n%s\n%s\n%s\n\n\n",songArray[i].name,songArray[i].artist, 
+        songArray[i].genre, songArray[i].description, songArray[i].link);
 }
 void print_datafromfile(){
     my_users(); 
@@ -170,3 +294,4 @@ char * conv_addr(struct sockaddr_in address)
   strcat (str, port);
   return (str);
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
