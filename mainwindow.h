@@ -33,7 +33,8 @@ private slots:
 
     void on_pushButton_clicked();
     //void on_signup_clicked();
-
+signals:
+    void loginSuccess();
 private:
     QLabel* Label_logOk;
     QLabel* Label_logWrong;

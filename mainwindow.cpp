@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->loginItemsLayout->addWidget(Label_signOk);
 
         musWind = new MusicWindow(nullptr, sd);
+        connect(this, SIGNAL(loginSuccess()), musWind, SLOT(startRefresh()));
 
 
     }
@@ -58,14 +59,14 @@ void MainWindow::on_pushButton_clicked()
 {
     printf("AICI SUNTEM!");
     char user_name[50], password[50];
-    memset(user_name, 0, sizeof(user_name));
+    memset(user_name, 0, sizeof(user_name)); ///ERA &user_name, &password
     memset(password, 0, sizeof(user_name));
     strcpy(user_name, ui->user->text().toStdString().c_str());
     strcpy(password, ui->pass->text().toStdString().c_str());
 
    // write(this->sd, "LOG", 256);
-    write(this->sd, &user_name, 50);
-    write(this->sd, &password, 50);
+    write(this->sd, user_name, 50);
+    write(this->sd, password, 50);
 
     char message[256];
     memset(message, 0, 256);
@@ -123,6 +124,7 @@ void MainWindow::logonSuccessful()
     this->update();
     musWind->show();
     this->hide();
+    emit(loginSuccess());
 }
 
 void MainWindow::logonUnSuccesful(){
